@@ -1,3 +1,4 @@
+
 services:
   local-ai:
     image: ollama/ollama:latest
@@ -25,7 +26,7 @@ services:
     ports:
       - "127.0.0.1:${OPEN_WEBUI_PORT:-3000}:8080"
     environment:
-      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_BASE_URL: http://local-ai:11434
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Set WEBUI_SECRET_KEY in .env}
     volumes:
       - open_webui_data:/app/backend/data
@@ -34,17 +35,15 @@ services:
     build:
       context: ./agent
     image: local/opencode-agent:latest
-    container_name: coding-agent
     working_dir: /workspace
     stdin_open: true
     tty: true
-    depends_on:
-      - local-ai
     environment:
-      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5-coder:14b}
+      HOME: /tmp
+      OPENCODE_CONFIG: /opt/opencode-config/opencode.json
+      OPENCODE_CONFIG_DIR: /opt/opencode-config
     volumes:
-      - ${WORKSPACE_PATH:-./workspace}:/workspace
-      - ./opencode:/root/.config/opencode
+      - ./opencode:/opt/opencode-config:ro
     profiles:
       - agent
 

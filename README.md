@@ -1,30 +1,35 @@
-# Local AI — Ollama + Open WebUI
+# Local AI — Ollama, Open WebUI & OpenCode
 
-Local AI stack powered by Ollama, Docker Compose and NVIDIA GPU.
+Local AI environment powered by Docker Compose, Ollama and NVIDIA GPU.
 
-Requirements: Docker, Docker Compose, NVIDIA drivers and NVIDIA Container Toolkit.
+## Requirements
 
-## Start
+- Docker Engine
+- Docker Compose v2
+- NVIDIA drivers and NVIDIA Container Toolkit
+
+## Configuration
 
 ```bash
 cp .env.template .env
 ```
 
-Paste the generated key into `WEBUI_SECRET_KEY` in `.env`.
+Set `WEBUI_SECRET_KEY` in `.env`.
+
+## Start
 
 ```bash
+# Start Ollama and Open WebUI
 docker compose up -d
 ```
 
-Open http://localhost:3000
+Run the agent command from the repository you want to work on. The agent uses that directory as its workspace.
+
+Open WebUI: http://localhost:3000
 
 ## Models
 
-Browse available models: https://ollama.com/search
-
-Recommended model: `qwen3.5:9b`
-
-Download models manually. They are stored locally in a persistent Docker volume.
+Browse models: https://ollama.com/search
 
 ```bash
 # Download
@@ -41,43 +46,60 @@ docker exec local-ai ollama list
 docker exec local-ai ollama rm MODEL_NAME
 ```
 
+## OpenCode
+
+Build the agent image once:
+
+```bash
+docker compose --profile agent build coding-agent
+```
+
+Run OpenCode in the current repository:
+
+```bash
+docker compose --profile agent run --rm --no-deps \
+  --entrypoint opencode \
+  --user "$(id -u):$(id -g)" \
+  -v "$PWD:/workspace" \
+  -w /workspace \
+  coding-agent
+```
+
+To use another repository, replace `$PWD` with its absolute path.
+
+The agent uses shared configuration, skills, agents and MCP servers from `opencode/`.
+
+Each session runs in a temporary container. Ollama and Open WebUI remain running in the background.
+
 ## Commands
 
 ```bash
-# Start
-docker compose up -d
-
-# Stop
-docker compose down
-
-# Logs
-docker compose logs -f
-
-# Status
-docker compose ps
-
-# Update containers
-docker compose pull
-docker compose up -d
+# Stop the stack
+docker compose --profile agent down
 ```
 
 ```bash
-# Hard reset
-docker system prune --volumes
+# Logs
+docker compose logs -f
+```
+
+```bash
+# View running containers
+docker compose ps
 ```
 
 ## Data
 
-Models, chats and settings are stored in persistent Docker volumes. 
-
-`docker compose down` keeps your data.
-
-Do not use `docker compose down -v` unless you want to delete your data.
-
-Avoid `docker system prune --volumes` unless you intend to remove unused Docker volumes.
+- Ollama models and Open WebUI data are stored in persistent Docker volumes.
+- `docker compose down` preserves volumes.
+- `docker compose down -v` deletes volumes and their data.
+- OpenCode configuration is stored in `opencode/`.
+- Temporary OpenCode session history is not persisted by default.
 
 ## Links
 
-- Ollama: https://ollama.com/
-- Model library: https://ollama.com/search
-- Open WebUI: https://docs.openwebui.com/
+- [Ollama](https://ollama.com/)
+- [Open WebUI](https://docs.openwebui.com/)
+- [OpenCode](https://opencode.ai/docs/)
+- [OpenCode Skills](https://opencode.ai/docs/skills/)
+- [OpenCode MCP](https://opencode.ai/docs/mcp-servers/)

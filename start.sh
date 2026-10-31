@@ -1,24 +1,12 @@
 
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
-cd "$(dirname "$0")"
+# Build the agent image, without starting the agent
+docker compose build coding-agent
 
-if [ ! -f .env ]; then
-  echo "Brak pliku .env!"
-  exit 1
-fi
+# Start Ollama and Open WebUI
+docker compose up -d
 
-set -a
-. ./.env
-set +a
-
-echo "Starting Ollama..."
-docker compose up -d local-ai
-
-echo "Downloading model..."
-docker compose exec -T local-ai \
-  ollama pull "${OLLAMA_MODEL}"
-
-echo "Starting OpenCode..."
-docker compose --profile agent run --rm coding-agent
+echo "Local AI stack is running."
+echo "Open WebUI: http://localhost:${OPEN_WEBUI_PORT:-3000}"

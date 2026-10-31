@@ -1,3 +1,4 @@
+
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "ollama/qwen2.5-coder:14b",
@@ -10,7 +11,7 @@
       },
       "models": {
         "qwen2.5-coder:14b": {
-          "name": "Qwen 2.5 Coder 14B",
+          "name": "Qwen Coder 14B",
           "limit": {
             "context": 32768,
             "output": 8192
@@ -19,21 +20,9 @@
       }
     }
   },
-
-  "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "enabled": true
-    }
-  },
   "permission": {
     "edit": "allow",
-    "write": "allow",
     "bash": "ask",
-    "webfetch": "allow"
-  },
-  "instructions": [
-    "/root/.config/opencode/AGENTS.md"
-  ]
+    "external_directory": "deny"
+  }
 }
