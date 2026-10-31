@@ -35,14 +35,14 @@ services:
   coding-agent:
     build:
       context: ./agent
-    image: local/opencode-agent:latest
+    image: ghcr.io/anomalyco/opencode:2.2.5
     working_dir: /workspace
     stdin_open: true
     tty: true
     environment:
       HOME: /tmp
       OPENCODE_CONFIG: /opt/opencode-config/opencode.json
-      OPENCODE_CONFIG_DIR: /opt/opencode-config
+      OPENCODE_CONFIG_DIR: /tmp/opencode-config
     volumes:
       - ./opencode:/opt/opencode-config:ro
     profiles:

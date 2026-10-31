@@ -21,7 +21,10 @@
   },
   "permission": {
     "edit": "allow",
-    "bash": "ask",
+    "bash": "allow",
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
     "external_directory": "deny"
   }
 }
