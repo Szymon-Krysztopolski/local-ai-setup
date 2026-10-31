@@ -20,7 +20,7 @@ Set `WEBUI_SECRET_KEY` in `.env`.
 
 ```bash
 # Start Ollama and Open WebUI
-docker compose up -d
+docker compose up --build -d
 ```
 
 Run the agent command from the repository you want to work on. The agent uses that directory as its workspace.
@@ -57,7 +57,7 @@ docker compose --profile agent build coding-agent
 Run OpenCode in the current repository:
 
 ```bash
-docker compose --profile agent run --rm --no-deps --entrypoint opencode -v "${PWD}:/workspace" coding-agent
+docker compose --profile agent run --build --rm --no-deps --entrypoint opencode -v "${PWD}:/workspace" coding-agent
 ```
 
 To use another repository, replace `WORKSPACE` with its path.
