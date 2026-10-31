@@ -5,6 +5,9 @@ services:
     restart: unless-stopped
     volumes:
       - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-32768}
+      OLLAMA_KEEP_ALIVE: -1
     deploy:
       resources:
         reservations:
@@ -13,20 +16,23 @@ services:
               count: all
               capabilities: [gpu]
 
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
-    restart: unless-stopped
+  coding-agent:
+    build:
+      context: ./agent
+    image: local/opencode-agent:latest
+    container_name: coding-agent
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
     depends_on:
       - local-ai
-    ports:
-      - "127.0.0.1:${OPEN_WEBUI_PORT:-3000}:8080"
     environment:
-      OLLAMA_BASE_URL: http://ollama:11434
-      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Set WEBUI_SECRET_KEY in .env}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5-coder:14b}
     volumes:
-      - open_webui_data:/app/backend/data
+      - ${WORKSPACE_PATH:-./workspace}:/workspace
+      - ./opencode:/root/.config/opencode
+    profiles:
+      - agent
 
 volumes:
   ollama_data:
-  open_webui_data:
