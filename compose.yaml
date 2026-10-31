@@ -18,7 +18,7 @@ services:
     container_name: open-webui
     restart: unless-stopped
     depends_on:
-      - ollama
+      - local-ai
     ports:
       - "127.0.0.1:${OPEN_WEBUI_PORT:-3000}:8080"
     environment:
