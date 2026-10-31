@@ -91,6 +91,11 @@ docker compose ps
 - OpenCode configuration is stored in `opencode/`.
 - Temporary OpenCode session history is not persisted by default.
 
+```bash
+# Hard reset
+docker system prune -a --volumes
+```
+
 ## Links
 
 - [Ollama](https://ollama.com/)
