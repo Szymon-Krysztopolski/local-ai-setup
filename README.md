@@ -33,7 +33,7 @@ Browse models: https://ollama.com/search
 
 ```bash
 # Download
-docker exec -it local-ai ollama pull qwen2.5-coder:7b
+docker exec -it local-ai ollama pull qwen3.5:4b
 ```
 
 ```bash
