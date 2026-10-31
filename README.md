@@ -57,15 +57,10 @@ docker compose --profile agent build coding-agent
 Run OpenCode in the current repository:
 
 ```bash
-docker compose --profile agent run --rm --no-deps \
-  --entrypoint opencode \
-  --user "$(id -u):$(id -g)" \
-  -v "$PWD:/workspace" \
-  -w /workspace \
-  coding-agent
+docker compose --profile agent run --rm --no-deps --entrypoint opencode -v "${PWD}:/workspace" coding-agent
 ```
 
-To use another repository, replace `$PWD` with its absolute path.
+To use another repository, replace `WORKSPACE` with its path.
 
 The agent uses shared configuration, skills, agents and MCP servers from `opencode/`.
 
