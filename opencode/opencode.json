@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "ollama/qwen2.5-coder:7b",
+  "compaction": {
+    "auto": false
+  },
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -11,6 +14,7 @@
       "models": {
         "qwen2.5-coder:7b": {
           "name": "Qwen2.5 Coder 7B",
+          "tool_call": true,
           "limit": {
             "context": 8192,
             "output": 4096
