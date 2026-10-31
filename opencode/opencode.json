@@ -1,7 +1,6 @@
-
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "ollama/qwen2.5-coder:14b",
+  "model": "ollama/qwen2.5-coder:7b",
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -10,11 +9,11 @@
         "baseURL": "http://local-ai:11434/v1"
       },
       "models": {
-        "qwen2.5-coder:14b": {
-          "name": "Qwen Coder 14B",
+        "qwen2.5-coder:7b": {
+          "name": "Qwen2.5 Coder 7B",
           "limit": {
-            "context": 32768,
-            "output": 8192
+            "context": 8192,
+            "output": 4096
           }
         }
       }
